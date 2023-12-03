@@ -17,6 +17,12 @@ type Note struct {
 	DeletedAt gorm.DeletedAt `gorm:"index"`
 }
 
+func (note *Note) Update(name string, content string) {
+	note.Name = name
+	note.Content = content
+	DB.Save(note)
+}
+
 func NotesAll() *[]Note {
 	var notes []Note
 	DB.Where("deleted_at is NULL").Order("updated_at desc").Find(&notes)
@@ -35,4 +41,9 @@ func NotesFind(id uint64) *Note {
 	var note Note
 	DB.Where("id = ?", id).First(&note)
 	return &note
+}
+
+func NotesMarkDelete(id uint64) {
+	// UPDATE notes SET deleted_at=<Current Time> WHERE id = <id> and user_id = <user_id>
+	DB.Where("id = ?", id).Delete(&Note{})
 }

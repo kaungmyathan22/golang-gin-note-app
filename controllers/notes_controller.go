@@ -68,3 +68,77 @@ func NotesShow(c *gin.Context) {
 		}),
 	)
 }
+
+func NotesEditPage(c *gin.Context) {
+	// currentUser := helpers.GetUserFromRequest(c)
+	// if currentUser == nil || currentUser.ID == 0 {
+	// 	c.HTML(
+	// 		http.StatusUnauthorized,
+	// 		"notes/index.html",
+	// 		helpers.SetPayload(c, gin.H{
+	// 			"alert": "Unauthorized Access!",
+	// 		}),
+	// 	)
+	// 	return
+	// }
+	idStr := c.Param("id")
+	id, err := strconv.ParseUint(idStr, 10, 64)
+	if err != nil {
+		fmt.Printf("Error: %v", err)
+	}
+	note := models.NotesFind(id)
+	// note := models.NotesFind(currentUser, id)
+	c.HTML(
+		http.StatusOK,
+		"notes/edit.html",
+		helpers.SetPayload(c, gin.H{
+			"note": note,
+		}),
+	)
+}
+
+func NotesUpdate(c *gin.Context) {
+	// currentUser := helpers.GetUserFromRequest(c)
+	// if currentUser == nil || currentUser.ID == 0 {
+	// 	c.HTML(
+	// 		http.StatusUnauthorized,
+	// 		"notes/index.html",
+	// 		helpers.SetPayload(c, gin.H{
+	// 			"alert": "Unauthorized Access!",
+	// 		}),
+	// 	)
+	// 	return
+	// }
+	idStr := c.Param("id")
+	id, err := strconv.ParseUint(idStr, 10, 64)
+	if err != nil {
+		fmt.Printf("Error: %v", err)
+	}
+	note := models.NotesFind(id)
+	// note := models.NotesFind(currentUser, id)
+	name := c.PostForm("name")
+	content := c.PostForm("content")
+	note.Update(name, content)
+	c.Redirect(http.StatusMovedPermanently, "/notes/"+idStr)
+}
+
+func NotesDelete(c *gin.Context) {
+	// currentUser := helpers.GetUserFromRequest(c)
+	// if currentUser == nil || currentUser.ID == 0 {
+	// 	c.HTML(
+	// 		http.StatusUnauthorized,
+	// 		"notes/index.html",
+	// 		helpers.SetPayload(c, gin.H{
+	// 			"alert": "Unauthorized Access!",
+	// 		}),
+	// 	)
+	// 	return
+	// }
+	idStr := c.Param("id")
+	id, err := strconv.ParseUint(idStr, 10, 64)
+	if err != nil {
+		fmt.Printf("Error: %v", err)
+	}
+	models.NotesMarkDelete(id)
+	c.Redirect(http.StatusSeeOther, "/notes")
+}
