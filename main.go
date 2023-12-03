@@ -19,6 +19,8 @@ func main() {
 	r.LoadHTMLGlob("templates/**/**")
 	r.GET("/notes", controllers.NotesIndex)
 	r.GET("/notes/new", controllers.NotesNew)
+	r.GET("/notes/:id", controllers.NotesShow)
+	r.POST("/notes", controllers.NoteCreate)
 	r.GET("/", func(c *gin.Context) {
 		c.HTML(http.StatusOK, "views/index.html", gin.H{
 			"title": "Notes applications",
