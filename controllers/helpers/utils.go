@@ -2,19 +2,20 @@ package helpers
 
 import (
 	"github.com/gin-gonic/gin"
+	"github.com/kaungmyathan22/golang-notes/models"
 )
 
-// func GetUserFromRequest(c *gin.Context) *models.User {
-// 	// Get user
-// 	userID := c.GetUint64("user_id")
-// 	var currentUser *models.User
-// 	if userID > 0 {
-// 		currentUser = models.UserFind(userID)
-// 	} else {
-// 		currentUser = nil
-// 	}
-// 	return currentUser
-// }
+func GetUserFromRequest(c *gin.Context) *models.User {
+	// Get user
+	userID := c.GetUint64("user_id")
+	var currentUser *models.User
+	if userID > 0 {
+		currentUser = models.UserFind(userID)
+	} else {
+		currentUser = nil
+	}
+	return currentUser
+}
 
 func IsUserLoggedIn(c *gin.Context) bool {
 	return (c.GetUint64("user_id") > 0)
